@@ -43,7 +43,7 @@ public class CalculatorController {
         return Map.of(
                 "a", a,
                 "b", b,
-                "result", a * b);
+                "result", multiplyNumbers(a, b));
     }
 
     private int multiplyNumbers(int a, int b) {
