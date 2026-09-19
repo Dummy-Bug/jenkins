@@ -20,7 +20,7 @@ pipeline {
         }
         stage('Lint') {
             steps {
-                sh 'mvn pmd:check'
+                sh 'mvn pmd:check -Dpmd.printFailingErrors=true'
             }
         }
         stage('Unit tests') {
