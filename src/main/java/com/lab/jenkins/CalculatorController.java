@@ -37,4 +37,16 @@ public class CalculatorController {
                 "b", b,
                 "result", calculator.add(a, b));
     }
+
+    @GetMapping("/api/multiply")
+    public Map<String, Integer> multiply(@RequestParam int a, @RequestParam int b) {
+        return Map.of(
+                "a", a,
+                "b", b,
+                "result", a * b);
+    }
+
+    private int multiplyNumbers(int a, int b) {
+        return a * b;
+    }
 }
