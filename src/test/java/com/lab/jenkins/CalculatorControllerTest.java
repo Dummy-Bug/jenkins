@@ -32,6 +32,13 @@ class CalculatorControllerTest {
     }
 
     @Test
+    void multiplyEndpointCalculatesCorrectly() throws Exception {
+        mockMvc.perform(get("/api/multiply").param("a", "10").param("b", "2"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.result").value(20));
+    }
+
+    @Test
     void addEndpointRejectsNonNumbers() throws Exception {
         mockMvc.perform(get("/api/add").param("a", "hello").param("b", "2"))
                 .andExpect(status().isBadRequest());
