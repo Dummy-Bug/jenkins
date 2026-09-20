@@ -1,0 +1,66 @@
+name: Deploy To Ubuntu
+
+on:
+  pull_request:
+    branches:
+      - master
+    types:
+      - closed
+
+jobs:
+
+  deploy:
+    if: github.event.pull_request.merged == true
+
+    runs-on: self-hosted
+
+    steps:
+
+      - name: Checkout Master
+        uses: actions/checkout@v7
+        with:
+          ref: master
+
+      - name: Java Setup
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Check Java Version
+        run: java -version
+
+      - name: Build Application
+        run: |
+          chmod +x mvnw
+          ./mvnw clean package -DskipTests
+
+      - name: Stop Old Application
+        run: |
+          if [ -f /home/ubuntu/calculator/app.pid ]; then
+            PID=$(cat /home/ubuntu/calculator/app.pid)
+
+            if kill -0 "$PID" 2>/dev/null; then
+              kill "$PID"
+              sleep 2
+            fi
+
+            rm -f /home/ubuntu/calculator/app.pid
+          fi
+
+      - name: Copy New Application
+        run: |
+          mkdir -p /home/ubuntu/calculator
+          cp target/app.jar /home/ubuntu/calculator/app.jar
+
+      - name: Start Application
+        run: |
+          cd /home/ubuntu/calculator
+
+          RUNNER_TRACKING_ID="" nohup java -jar app.jar > app.log 2>&1 &
+
+          echo $! > app.pid
+
+      - name: Verify Deployment
+        run: |
+          curl -f --retry 10 --retry-delay 3 --retry-connrefused http://localhost:8081/health
