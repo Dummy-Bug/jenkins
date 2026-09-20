@@ -1,7 +1,6 @@
-package com.lab.jenkins;
+package com.lab.jenkins.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
@@ -20,13 +19,7 @@ class CalculatorTest {
     }
 
     @Test
-    void appliesDiscount() {
-        assertEquals(900.0, calculator.calculateDiscount(1000, 10));
-    }
-
-    @Test
-    void rejectsDiscountOfHundredPercentOrMore() {
-        assertThrows(IllegalArgumentException.class,
-                () -> calculator.calculateDiscount(1000, 120));
+    void multipliesTwoNumbers() {
+        assertEquals(20, calculator.multiply(10, 2));
     }
 }

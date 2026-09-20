@@ -1,4 +1,4 @@
-package com.lab.jenkins;
+package com.lab.jenkins.controller;
 
 import java.util.Map;
 
@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.lab.jenkins.service.Calculator;
 
 @RestController
 public class CalculatorController {
@@ -38,15 +40,19 @@ public class CalculatorController {
                 "result", calculator.add(a, b));
     }
 
+    @GetMapping("/api/subtract")
+    public Map<String, Integer> subtract(@RequestParam int a, @RequestParam int b) {
+        return Map.of(
+                "a", a,
+                "b", b,
+                "result", calculator.subtract(a, b));
+    }
+
     @GetMapping("/api/multiply")
     public Map<String, Integer> multiply(@RequestParam int a, @RequestParam int b) {
         return Map.of(
                 "a", a,
                 "b", b,
-                "result", multiplyNumbers(a, b));
-    }
-
-    private int multiplyNumbers(int a, int b) {
-        return a * b;
+                "result", calculator.multiply(a, b));
     }
 }

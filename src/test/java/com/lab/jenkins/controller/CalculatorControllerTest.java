@@ -1,4 +1,4 @@
-package com.lab.jenkins;
+package com.lab.jenkins.controller;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -29,6 +29,13 @@ class CalculatorControllerTest {
         mockMvc.perform(get("/api/add").param("a", "40").param("b", "2"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.result").value(42));
+    }
+
+    @Test
+    void subtractEndpointCalculatesCorrectly() throws Exception {
+        mockMvc.perform(get("/api/subtract").param("a", "10").param("b", "4"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.result").value(6));
     }
 
     @Test
